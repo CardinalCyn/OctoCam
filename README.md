@@ -18,3 +18,5 @@ used in your OctoPrint to manage the streaming and timelapse generation of your 
 Pull requests are welcome, just open an issue to discuss what you'd like to change.
 
 ## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
