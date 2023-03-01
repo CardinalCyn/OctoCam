@@ -1,0 +1,60 @@
+body{
+  background-color: black;
+  color:white;
+}
+#inputContainer{
+  width:100%;
+  display:flex;
+  align-items:center;
+}
+#inputContainer > * {
+  margin-right: 20px;
+}
+
+#inputContainer > *:last-child {
+  margin-right: 0;
+}
+select[name="cameras"] {
+    padding: 10px; 
+    background:#edf2ff; 
+    border:none;
+  }
+  #urlContainer{
+    margin-top: 100px;
+    align-items: center;
+  }
+  #streamUrlContainer,#snapshotUrlContainer{
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  #streamUrlContainer > *,#snapshotUrlContainer > * {
+    margin-right: 20px;
+  }
+  .urlLabel{
+    display:flex;
+    height:40px;
+    width:50%;
+    background-color: white;
+    color:black;
+    align-items: center;
+    justify-content: center;
+  }
+  button{
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0 16px;
+    border-radius: 4px;
+    color: black;
+    background: #6200ee;
+    text-align: center;
+    height: 36px;
+    text-decoration: none;
+    min-width: 64px;
+    border: none;
+    text-align: center;
+    box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+    transition: box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
