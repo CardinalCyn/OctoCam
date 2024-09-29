@@ -13,7 +13,7 @@ app = Flask(__name__, template_folder=os.path.join(base_path, 'templates'), stat
 # imports routes for flask
 from routes import *
 # logo path
-logo_path="static/logo/O    ctoLogo.png"
+logo_path="static/logo/OctoLogo.png"
 
 # returns success if server is online
 #runs pyfladesk application, gui on port
