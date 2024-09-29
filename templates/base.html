@@ -1,112 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>OctoCam</title>
 
-    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
-    
-    <script type="text/javascript" src="{{ url_for('static', filename='script.js') }}"></script>
-</head>
+    <link
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
+    <link
+      href="{{ url_for('static', filename='css/styles.css') }}"
+      rel="stylesheet"
+    />
 
-<body>
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='script.js') }}"
+    ></script>
+  </head>
+
+  <body>
     <header class="container">
-        <h3 class="text-muted"></h3>
-        {% block header %}
-        <h1 > OctoCam </h1>
-        {% endblock %}
+      <h3 class="text-muted"></h3>
+      {% block header %}
+      <h1>OctoCam</h1>
+      {% endblock %}
     </header>
 
     <div class="container">
-        {% block content %}
-            <!-- Form when submitted, makes server request to see if server is online and makes a stream based on the camera and dimensions. -->
-            <form onsubmit="pullLinks(event)">
-                <div id="inputContainer" class="flex">
-                    <!-- Pulls list of cameras connected to computer -->
-                    <button type="button" onclick="setDropDown()" style="min-width: 100px;">Pull Cameras</button>
-                    <!-- Select element holding all cameras connected to computer. The one selected will be used for the stream url -->
-                    <select class="form-control" name="userCameras"></select>
-                    <label for="width">Width</label>
-                    <input class="form-control" type="number" name="width" id="width" value="640" />
-                    <label for="height">Height</label>
-                    <input class="form-control" type="number" name="height" id="height" value="480" />
-                    <button>Pull Feed</button>
-                </div>
-            </form>
-            <!-- Divs to hold url links and buttons to copy the stream/snapshot urls -->
-            <div id="urlContainer" class="mt-2">
-                <div id="streamUrlContainer">
-                    <label id="streamUrl" class="urlLabel">Stream Url</label>
-                    <button onclick="copyUrl('streamUrl')">Copy</button>
-                </div>
-                <div id="snapshotUrlContainer">
-                    <label id="snapshotUrl" class="urlLabel">Snapshot Url</label>
-                    <button onclick="copyUrl('snapshotUrl')">Copy</button>
-                </div>
-            </div>
-            <script>
-                //pulls cameras, and sets them into the dropdown.
-                const setDropDown=async()=>{
-                    response=await pullCameras();
-                    const select = document.querySelector('select[name="userCameras"]');
-                    for (const key in response) {
-                        const option = document.createElement('option');
-                        option.text = key;
-                        option.value = response[key];
-                        select.appendChild(option);
-                    }
-                }
-                // runs pullCameras in static/script.js, retrieves selected camera value, width, height, and makes server request to see if online, and then shows urls
-                const pullLinks=async(event)=>{
-                    event.preventDefault();
-                    response=await pullCameras();
-                    const selectedCameraValue = document.querySelector('select[name="userCameras"]').value;
-                    const width = document.getElementById('width').value;
-                    const height = document.getElementById('height').value;
-                    response=await pullStreams(selectedCameraValue,width,height);
-                    if(response==="error"){
-                        alert("Error");
-                    }else{
-                        const streamUrlLabel=document.querySelector('label[id="streamUrl"]')
-                        const snapshotUrlLabel=document.querySelector('label[id="snapshotUrl"]')
-                        streamUrlLabel.innerText=response["streamUrl"];
-                        snapshotUrlLabel.innerText=response["snapshotUrl"];
-                    }
-                }
-                // When button is pushed, copies the url to user's clipboard
-                const copyUrl=async(urlType)=>{
-                    const urlLabel = document.getElementById(urlType);
-                    const url = urlLabel.textContent;
-                    
-                    const tempInput = document.createElement("input");
-                    tempInput.setAttribute("type", "text");
-                    tempInput.setAttribute("value", url);
-                    
-                    document.body.appendChild(tempInput);
-                    tempInput.select();
-                    
-                    try {
-                        const success = document.execCommand("copy");
-                        if (success) {
-                        alert("Content copied to clipboard");
-                        } else {
-                        throw new Error();
-                        }
-                    } catch (err) {
-                        alert("Failed to copy: ", err);
-                    } finally {
-                        document.body.removeChild(tempInput);
-                    }
-                }
-            </script>
-        {% endblock %}
+      {% block content %}
+      <!-- Form when submitted, makes server request to see if server is online and makes a stream based on the camera and dimensions. -->
+      <form onsubmit="pullLinks(event)">
+        <div id="inputContainer" class="flex">
+          <!-- Pulls list of cameras connected to computer -->
+          <button
+            type="button"
+            onclick="setDropDown()"
+            style="min-width: 100px"
+          >
+            Pull Cameras
+          </button>
+          <!-- Select element holding all cameras connected to computer. The one selected will be used for the stream url -->
+          <select class="form-control" name="userCameras"></select>
+          <label for="width">Width</label>
+          <input
+            class="form-control"
+            type="number"
+            name="width"
+            id="width"
+            value="640"
+          />
+          <label for="height">Height</label>
+          <input
+            class="form-control"
+            type="number"
+            name="height"
+            id="height"
+            value="480"
+          />
+          <button>Pull Feed</button>
+        </div>
+      </form>
+      <!-- Divs to hold url links and buttons to copy the stream/snapshot urls -->
+      <div id="urlContainer" class="mt-2">
+        <div id="streamUrlContainer">
+          <label id="streamUrl" class="urlLabel">Stream Url</label>
+          <button onclick="copyUrl('streamUrl')">Copy</button>
+        </div>
+        <div id="snapshotUrlContainer">
+          <label id="snapshotUrl" class="urlLabel">Snapshot Url</label>
+          <button onclick="copyUrl('snapshotUrl')">Copy</button>
+        </div>
+      </div>
+      <!-- <script>        
+        // runs pullCameras in static/script.js, retrieves selected camera value, width, height, and makes server request to see if online, and then shows urls
+        const pullLinks = async (event) => {
+          event.preventDefault();
+          response = await pullCameras();
+          const selectedCameraValue = document.querySelector(
+            'select[name="userCameras"]'
+          ).value;
+          const width = document.getElementById("width").value;
+          const height = document.getElementById("height").value;
+          response = await pullStreams(selectedCameraValue, width, height);
+          if (response === "error") {
+            alert("Error");
+          } else {
+            const streamUrlLabel = document.querySelector(
+              'label[id="streamUrl"]'
+            );
+            const snapshotUrlLabel = document.querySelector(
+              'label[id="snapshotUrl"]'
+            );
+            streamUrlLabel.innerText = response["streamUrl"];
+            snapshotUrlLabel.innerText = response["snapshotUrl"];
+          }
+        };
+        // When button is pushed, copies the url to user's clipboard
+        const copyUrl = async (urlType) => {
+          const urlLabel = document.getElementById(urlType);
+          const url = urlLabel.textContent;
+
+          const tempInput = document.createElement("input");
+          tempInput.setAttribute("type", "text");
+          tempInput.setAttribute("value", url);
+
+          document.body.appendChild(tempInput);
+          tempInput.select();
+
+          try {
+            const success = document.execCommand("copy");
+            if (success) {
+              alert("Content copied to clipboard");
+            } else {
+              throw new Error();
+            }
+          } catch (err) {
+            alert("Failed to copy: ", err);
+          } finally {
+            document.body.removeChild(tempInput);
+          }
+        };
+      </script> -->
+      {% endblock %}
     </div>
 
-    <footer class="container footer">
-        {% block footer %}
-        {% endblock %}
-    </footer>
-</body>
-
+    <footer class="container footer">{% block footer %} {% endblock %}</footer>
+  </body>
 </html>

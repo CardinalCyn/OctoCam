@@ -1,11 +1,28 @@
 from flask import Flask
-from pyfladesk import init_gui
+import webbrowser
+from config import DEFAULT_PORT
+import os
+import sys
+path = os.getcwd()
+if getattr(sys, 'frozen', False):  # Check if running as a PyInstaller bundle
+    base_path = sys._MEIPASS
+else:
+    base_path = os.getcwd()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=os.path.join(base_path, 'templates'), static_folder=os.path.join(base_path, 'static'))
 # imports routes for flask
 from routes import *
 # logo path
-logo_path="static/logo/OctoLogo.png"
+logo_path="static/logo/O    ctoLogo.png"
+
+# returns success if server is online
 #runs pyfladesk application, gui on port
 if __name__ == '__main__':
-    init_gui(app,port= 8081,window_title="OctoCam",icon=logo_path)
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+    local_url = f'http://{local_ip}:{DEFAULT_PORT}'  # Change this if necessary to your local IP
+    
+    print(local_url)
+    # Open the URL in the default web browser (Chrome)
+    webbrowser.open(local_url)
+    app.run(host='0.0.0.0', port=DEFAULT_PORT)
