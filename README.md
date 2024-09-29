@@ -26,3 +26,5 @@ Pull requests are welcome, just open an issue to discuss what you'd like to chan
 Be sure to check your firewall if attempting to access the url from another device.
 
 ## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
