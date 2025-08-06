@@ -4,6 +4,7 @@ from app import app
 from config import DEFAULT_PORT
 from pygrabber.dshow_graph import FilterGraph
 from utils import generate_feed,generate_snapshot
+import pythoncom
 
 
 # Renders the HTML for the application
@@ -20,6 +21,7 @@ def get_server():
 def get_cameras():
     try:
         available_cameras = {}
+        pythoncom.CoInitialize()
         devices = FilterGraph().get_input_devices()
         available_cameras = {}
         for device_index,device_name in enumerate(devices):
