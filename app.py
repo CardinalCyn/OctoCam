@@ -25,4 +25,5 @@ if __name__ == '__main__':
     print(local_url)
     # Open the URL in the default web browser (Chrome)
     webbrowser.open(local_url)
+    pythoncom.CoInitialize()
     app.run(host='0.0.0.0', port=DEFAULT_PORT)
